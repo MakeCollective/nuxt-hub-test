@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { email, password } = parsed.data;
+  const { firstName, lastName, email, password } = parsed.data;
   const normalizedEmail = email.toLowerCase();
   const passwordHashValue = await hashPassword(password);
 
@@ -29,6 +29,8 @@ export default defineEventHandler(async (event) => {
       .values({
         email: normalizedEmail,
         passwordHash: passwordHashValue,
+        firstName,
+        lastName,
         createdAt: Math.floor(Date.now() / 1000),
       })
       .returning({ id: users.id });

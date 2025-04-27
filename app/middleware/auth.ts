@@ -1,7 +1,6 @@
-export default defineNuxtRouteMiddleware(async (to) => {
-  if (import.meta.server) return;
-  const user = useCurrentUser();
-  if (!user.value && to.path !== "/login") {
+export default defineNuxtRouteMiddleware(async () => {
+  const user = await useCurrentUser();
+  if (!user.value) {
     return navigateTo("/login");
   }
 });

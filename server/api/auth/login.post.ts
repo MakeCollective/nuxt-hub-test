@@ -32,11 +32,10 @@ export default defineEventHandler(async (event) => {
   if (!user) {
     return sendError(
       event,
-      createError({ statusCode: 401, statusMessage: "Invalid credentials" }),
+      createError({ statusCode: 401, statusMessage: "No user" }),
     );
   }
-
-  const isValid = await verifyPassword(password, user.passwordHash);
+  const isValid = await verifyPassword(user.passwordHash, password);
   if (!isValid) {
     return sendError(
       event,

@@ -12,6 +12,8 @@ export const users = sqliteTable("users", {
   id: cuid(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
   createdAt: integer("created_at")
     .notNull()
     .default(Math.floor(Date.now() / 1000)),

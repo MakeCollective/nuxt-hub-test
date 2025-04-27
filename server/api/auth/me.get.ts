@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   const db = useDrizzle();
   const user = await db.query.users.findFirst({
     where: eq(users.id, session.userId),
-    columns: { id: true, email: true },
+    columns: { id: true, email: true, firstName: true, lastName: true },
   });
 
   return user || null;

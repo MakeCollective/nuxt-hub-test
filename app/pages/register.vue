@@ -5,6 +5,8 @@ import { registerSchema } from "~~/lib/validation/user";
 const form = ref({
   email: "",
   password: "",
+  firstName: "",
+  lastName: "",
 });
 
 const loading = ref(false);
@@ -18,7 +20,7 @@ async function handleSubmit() {
   try {
     const parsed = registerSchema.safeParse(form.value);
     if (!parsed.success) {
-      error.value = "Please enter a valide email address and password";
+      error.value = "Please enter a valid email address and password";
       return;
     }
     const res = await $fetch("/api/auth/register", {
@@ -41,6 +43,30 @@ async function handleSubmit() {
   <div class="max-w-md mx-auto py-12">
     <h1 class="text-2xl font-semibold mb-6">Register</h1>
     <form class="space-y-4" @submit.prevent="handleSubmit">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >First Name</label
+        >
+        <input
+          v-model="form.firstName"
+          type="text"
+          id="firstname"
+          required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+        />
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >First Name</label
+        >
+        <input
+          v-model="form.lastName"
+          type="text"
+          id="lastname"
+          required
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+        />
+      </div>
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700"
           >Email</label
