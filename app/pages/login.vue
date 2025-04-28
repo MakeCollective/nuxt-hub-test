@@ -40,9 +40,9 @@ async function handleSubmit() {
           >Email</label
         >
         <input
+          id="email"
           v-model="form.email"
           type="email"
-          id="email"
           required
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
         />
@@ -53,9 +53,9 @@ async function handleSubmit() {
           >Password</label
         >
         <input
+          id="password"
           v-model="form.password"
           type="password"
-          id="password"
           required
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
         />
