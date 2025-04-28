@@ -66,7 +66,7 @@ async function handleSubmit() {
         :disabled="loading"
         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
       >
-        {{ loading ? "Registering..." : "Register" }}
+        {{ loading ? "Loggin in..." : "Login" }}
       </button>
 
       <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>

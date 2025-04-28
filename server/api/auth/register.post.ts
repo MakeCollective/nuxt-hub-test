@@ -2,7 +2,7 @@ import { defineEventHandler, readBody, createError, sendError } from "h3";
 import { users } from "../../database/schema";
 import { registerSchema } from "~~/lib/validation/user";
 import type { H3Error } from "h3";
-import { createId } from "@paralleldrive/cuid2";
+import { createSession } from "../../utils/session";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -36,23 +36,7 @@ export default defineEventHandler(async (event) => {
       .returning({ id: users.id });
 
     // Auto Log in by setting the session in KV
-
-    const kv = hubKV();
-    // Generate a secure session ID and store it in KV
-    const sid = createId();
-    const sessionTTL = 60 * 60 * 24 * 30; // 30 days
-
-    await kv.set(
-      `sess:${sid}`,
-      {
-        userId: user.id,
-        createdAt: Date.now(),
-      },
-      { ttl: sessionTTL },
-    );
-
-    // Set session cookie
-    setSessionCookie(event, sid, sessionTTL);
+    await createSession(event, user.id);
     //Return basic response
     return { success: true };
   } catch (err: unknown) {

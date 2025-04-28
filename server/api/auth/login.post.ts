@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { users } from "../../database/schema";
 import { eq } from "drizzle-orm";
-import { createId } from "@paralleldrive/cuid2";
-import { hubKV } from "#imports"; // NuxtHub's KV composable
+import { createSession } from "../../utils/session";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -23,7 +22,6 @@ export default defineEventHandler(async (event) => {
 
   const { email, password } = parsed.data;
   const db = useDrizzle();
-  const kv = hubKV(); // Access the KV storage
 
   const user = await db.query.users.findFirst({
     where: eq(users.email, email.toLowerCase()),
@@ -44,20 +42,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Generate a secure session ID and store it in KV
-  const sid = createId();
-  const sessionTTL = 60 * 60 * 24 * 30; // 30 days
-
-  await kv.set(
-    `sess:${sid}`,
-    {
-      userId: user.id,
-      createdAt: Date.now(),
-    },
-    { ttl: sessionTTL },
-  );
-
-  // Set session cookie
-  setSessionCookie(event, sid, sessionTTL);
+  await createSession(event, user.id);
 
   return { success: true };
 });

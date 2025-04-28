@@ -30,6 +30,8 @@ export function clearCurrentUser() {
 
 export async function refreshCurrentUser() {
   const user = useState<CurrentUser | null>("current-user");
+  const sid = useCookie("sid");
+  console.log(sid.value);
   try {
     const res = await $fetch<CurrentUser | null>("/api/auth/me", {
       credentials: "include",
@@ -38,7 +40,10 @@ export async function refreshCurrentUser() {
     if (parsed.success) {
       user.value = parsed.data;
     } else {
+      // Clean up session data if invalid user/session
+      console.log("Cleaning up session");
       user.value = null;
+      sid.value = null;
     }
   } catch {
     user.value = null;
