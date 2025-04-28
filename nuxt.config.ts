@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     public: {},
     auth: {
       cookieSecure: process.env.NODE_ENV === "production",
-      cookieSameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      cookieSameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
     },
   },
   nitro: {
